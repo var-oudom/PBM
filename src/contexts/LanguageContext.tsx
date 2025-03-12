@@ -59,7 +59,7 @@ const translations = {
     
     // Experience Section
     'experience.title': '100 Years Of Experience',
-    'experience.description': '100 years of innovative leadership has led to industry firsts & brand dominance in many of essential technologies that are so prized in the pool. We are two-time proud winners of the America's Cup and global leaders in pool technology.',
+    'experience.description': '100 years of innovative leadership has led to industry firsts & brand dominance in many of essential technologies that are so prized in the pool. We are two-time proud winners of the America\'s Cup and global leaders in pool technology.',
     'experience.cta': 'Learn More',
     
     // Inspiration
@@ -135,7 +135,7 @@ const translations = {
     
     // Experience Section
     'experience.title': 'បទពិសោធន៍ ១០០ ឆ្នាំ',
-    'experience.description': '១០០ ឆ្នាំនៃភាពជាអ្នកដឹកនាំច្នៃប្រឌិតបានបង្កើតឲ្យមានការរីកចម្រើនដែលជាកិត្តិនាមយីហោក្នុងវិស័យ និងការគ្រប់គ្រងបច្ចេកវិទ្យាសំខាន់ៗដែលត្រូវបានគេចូលចិត្តក្នុងអាងហែលទឹក។ យើងជាអ្នកឈ្នះពាន America\'s Cup ចំនួនពីរដង និងជាអ្នកដឹកនាំពិភពលោកក្នុងបច្ចេកវិទ្យាអាងហែលទឹក។',
+    'experience.description': '១០០ ឆ្នាំនៃភាពជាអ្នកដឹកនាំច្នៃប្រឌិតបានបង្កើតឲ្យមានការរីកចម្រើនដែលជាកិត្តិនាមយីហោក្នុងវិស័យ និងការគ្រប់គ្រងបច្ចេកវិទ្យាសំខាន់ៗដែលត្រូវបានគេចូលចិត្តក្នុងអាងហែលទឹក។ យើងជាអ្នកឈ្នះពាន America\\\'s Cup ចំនួនពីរដង និងជាអ្នកដឹកនាំពិភពលោកក្នុងបច្ចេកវិទ្យាអាងហែលទឹក។',
     'experience.cta': 'មើលបន្ថែម',
     
     // Inspiration
