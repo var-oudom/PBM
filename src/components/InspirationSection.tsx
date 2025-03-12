@@ -2,6 +2,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const InspirationSection = () => {
   const { t } = useLanguage();
@@ -31,9 +32,9 @@ const InspirationSection = () => {
     <section className="py-16 bg-gray-50 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">{t('inspiration.title')}</h2>
+          <h2 className="text-3xl font-bold mb-4">{t('brand.title')}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            {t('inspiration.description')}
+            {t('brand.description')}
           </p>
           <div className="w-20 h-1 bg-brand-blue mx-auto mt-8 rounded-full"></div>
         </div>
@@ -62,9 +63,11 @@ const InspirationSection = () => {
         </div>
         
         <div className="text-center mt-12">
-          <Button className="bg-brand-blue hover:bg-brand-blue/90">
-            {t('inspiration.viewAll')}
-          </Button>
+          <Link to="/brand">
+            <Button className="bg-brand-blue hover:bg-brand-blue/90">
+              {t('brand.viewAll')}
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

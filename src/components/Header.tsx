@@ -69,8 +69,8 @@ const Header = () => {
               {t('nav.products')} <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${activeDropdown === 'products' ? 'rotate-180' : ''}`} />
             </button>
             
-            <a href="/inspiration" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
-              {t('nav.inspiration')}
+            <a href="/brand" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+              {t('nav.brand')}
             </a>
             
             <button 
@@ -102,23 +102,6 @@ const Header = () => {
 
           {/* Right actions */}
           <div className="flex items-center space-x-2 md:space-x-4">
-            {/* Find a Dealer Button */}
-            <Button 
-              size="sm" 
-              className="bg-brand-blue hover:bg-brand-blue/90 text-white rounded px-4 py-2 hidden md:flex"
-            >
-              {t('nav.findDealer')}
-            </Button>
-            
-            {/* Login Button */}
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="bg-brand-yellow hover:bg-brand-yellow/90 text-black border-none rounded px-4 py-2 hidden md:flex"
-            >
-              {t('nav.login')}
-            </Button>
-
             {/* Language Switcher */}
             <Popover>
               <PopoverTrigger asChild>
@@ -178,8 +161,8 @@ const Header = () => {
                 <span>{t('nav.products')}</span>
                 <ChevronDown className="h-4 w-4" />
               </a>
-              <a href="/inspiration" className="py-2 text-gray-800 border-b border-gray-100">
-                {t('nav.inspiration')}
+              <a href="/brand" className="py-2 text-gray-800 border-b border-gray-100">
+                {t('nav.brand')}
               </a>
               <a href="#" className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
                 <span>{t('nav.support')}</span>
@@ -199,14 +182,6 @@ const Header = () => {
                 <ChevronDown className="h-4 w-4" />
               </a>
             </nav>
-            <div className="mt-4 space-y-2">
-              <Button className="w-full bg-brand-blue hover:bg-brand-blue/90">
-                {t('nav.findDealer')}
-              </Button>
-              <Button variant="outline" className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-black border-none">
-                {t('nav.login')}
-              </Button>
-            </div>
           </div>
         </div>
       )}

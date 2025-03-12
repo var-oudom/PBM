@@ -8,6 +8,7 @@ const HeroSection = () => {
   const { t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [autoplayInterval, setAutoplayInterval] = useState<number | null>(null);
 
   const slides = [
     {
@@ -17,12 +18,48 @@ const HeroSection = () => {
       cta: 'hero.cta',
       image: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=1280&auto=format&fit=crop',
       gradient: 'from-brand-blue to-brand-lightBlue',
+    },
+    {
+      id: 2,
+      title: 'hero.title2',
+      subtitle: 'hero.subtitle2',
+      cta: 'hero.cta',
+      image: 'https://images.unsplash.com/photo-1622902046580-2e0cb8d9d6d4?q=80&w=800&auto=format&fit=crop',
+      gradient: 'from-brand-darkBlue to-brand-blue',
+    },
+    {
+      id: 3,
+      title: 'hero.title3',
+      subtitle: 'hero.subtitle3',
+      cta: 'hero.cta',
+      image: 'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?q=80&w=800&auto=format&fit=crop',
+      gradient: 'from-brand-blue to-brand-lightBlue',
     }
   ];
 
+  // Initialize autoplay
   useEffect(() => {
     setIsLoaded(true);
+    const interval = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, 5000);
+    setAutoplayInterval(interval);
+    
+    return () => {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+      }
+    };
   }, []);
+
+  // Pause autoplay on user interaction
+  const handleManualSlideChange = (index: number) => {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+      setAutoplayInterval(null);
+    }
+    setCurrentSlide(index);
+  };
 
   return (
     <div className="relative w-full h-[600px] md:h-[650px] mt-16 overflow-hidden">
@@ -83,7 +120,7 @@ const HeroSection = () => {
         {slides.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentSlide(index)}
+            onClick={() => handleManualSlideChange(index)}
             className={`w-3 h-3 rounded-full transition-all ${
               currentSlide === index 
                 ? 'bg-white scale-110' 
@@ -94,25 +131,21 @@ const HeroSection = () => {
         ))}
       </div>
       
-      {/* Arrow Navigation (only show if more than one slide) */}
-      {slides.length > 1 && (
-        <>
-          <button 
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all"
-            onClick={() => setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="h-6 w-6 text-white" />
-          </button>
-          <button 
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all"
-            onClick={() => setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))}
-            aria-label="Next slide"
-          >
-            <ChevronRight className="h-6 w-6 text-white" />
-          </button>
-        </>
-      )}
+      {/* Arrow Navigation */}
+      <button 
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all"
+        onClick={() => handleManualSlideChange(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="h-6 w-6 text-white" />
+      </button>
+      <button 
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all"
+        onClick={() => handleManualSlideChange(currentSlide === slides.length - 1 ? 0 : currentSlide + 1)}
+        aria-label="Next slide"
+      >
+        <ChevronRight className="h-6 w-6 text-white" />
+      </button>
     </div>
   );
 };
