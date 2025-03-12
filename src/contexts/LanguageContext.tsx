@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'km';
@@ -22,7 +21,12 @@ const translations = {
     'nav.dealers': 'Find a Dealer',
     'nav.newsletter': 'Newsletter',
     'nav.findProduct': 'Find a Product',
-    'nav.login': 'Log In',
+    'nav.login': 'LOGIN TO MYFLUIDRA',
+    'nav.findDealer': 'FIND A DEALER',
+    'nav.inspiration': 'Inspiration',
+    'nav.promotions': 'Promotions',
+    'nav.faq': 'FAQ',
+    'nav.poolSpaGuides': 'Pool & Spa Guides',
     
     // Hero Section
     'hero.title': 'World\'s First Cordless Robotic Spa Cleaner',
@@ -84,7 +88,27 @@ const translations = {
     'footer.sitemap': 'Sitemap',
     'footer.copyright': '© 2023 All Rights Reserved.',
     'footer.trademark': 'ZODIAC® is a registered trademark of Zodiac International S.A.S used under license.',
-    'footer.followUs': 'Follow Us'
+    'footer.followUs': 'Follow Us',
+    
+    // Mega Menu
+    'menu.products': 'Our Products',
+    'menu.poolCleaners': 'Pool & Spa Cleaners',
+    'menu.saltChlorinators': 'Salt Chlorinators',
+    'menu.chemicalFeeding': 'Chemical Feeding Systems',
+    'menu.poolPumps': 'Pool Pumps',
+    'menu.poolFilters': 'Pool Filters',
+    'menu.poolHeaters': 'Pool Heaters',
+    'menu.controllers': 'Pool And Spa Controllers',
+    'menu.valves': 'Pool & Spa Valves',
+    'menu.waterFeatures': 'Water Features',
+    'menu.poolLights': 'Pool Lights',
+    'menu.mineralPools': 'MagnaPool® Mineral Pools',
+    'menu.waterPurification': 'Mineral Water Purification Systems',
+    'menu.poolChemicals': 'Pool Chemicals',
+    'menu.spaChemicals': 'Spa Chemicals',
+    'menu.discontinued': 'Discontinued Products',
+    'menu.climateCare': 'Climate Care Certified',
+    'menu.sustainablePool': 'MySustainablePool'
   },
   km: {
     // Navigation
@@ -98,7 +122,12 @@ const translations = {
     'nav.dealers': 'ស្វែងរកឈ្មួញ',
     'nav.newsletter': 'ព្រឹត្តិបត្រ',
     'nav.findProduct': 'ស្វែងរកផលិតផល',
-    'nav.login': 'ចូល',
+    'nav.login': 'ចូលគណនី MYFLUIDRA',
+    'nav.findDealer': 'ស្វែងរកអ្នកលក់',
+    'nav.inspiration': 'ការបំផុសគំនិត',
+    'nav.promotions': 'ការផ្សព្វផ្សាយ',
+    'nav.faq': 'សំណួរញឹកញាប់',
+    'nav.poolSpaGuides': 'មគ្គុទេសក៍អាងហែលទឹកនិងស្ប៉ា',
     
     // Hero Section
     'hero.title': 'ម៉ាស៊ីនសម្អាតស្ប៉ាដំបូងគេបង្អស់ក្នុងពិភពលោក',
@@ -135,7 +164,7 @@ const translations = {
     
     // Experience Section
     'experience.title': 'បទពិសោធន៍ ១០០ ឆ្នាំ',
-    'experience.description': '១០០ ឆ្នាំនៃភាពជាអ្នកដឹកនាំច្នៃប្រឌិតបានបង្កើតឲ្យមានការរីកចម្រើនដែលជាកិត្តិនាមយីហោក្នុងវិស័យ និងការគ្រប់គ្រងបច្ចេកវិទ្យាសំខាន់ៗដែលត្រូវបានគេចូលចិត្តក្នុងអាងហែលទឹក។ យើងជាអ្នកឈ្នះពាន America\\\'s Cup ចំនួនពីរដង និងជាអ្នកដឹកនាំពិភពលោកក្នុងបច្ចេកវិទ្យាអាងហែលទឹក។',
+    'experience.description': '១០០ ឆ្នាំនៃភាពជាអ្នកដឹកនាំច្នៃប្រឌិតបានបង្កើតឲ្យមានការរីកចម្រើនដែលជាកិត្តិនាមយីហោក្នុងវិស័យ និងការគ្រប់គ្រងបច្ចេកវិទ្យាសំខាន់ៗដែលត្រូវបានគេចូលចិត្តក្នុងអាងហែលទឹក។ យើងជាអ្នកឈ្នះពាន America\'s Cup ចំនួនពីរដង និងជាអ្នកដឹកនាំពិភពលោកក្នុងបច្ចេកវិទ្យាអាងហែលទឹក។',
     'experience.cta': 'មើលបន្ថែម',
     
     // Inspiration
@@ -160,7 +189,27 @@ const translations = {
     'footer.sitemap': 'ផែនទីគេហទំព័រ',
     'footer.copyright': '© 2023 រក្សាសិទ្ធិគ្រប់យ៉ាង។',
     'footer.trademark': 'ZODIAC® គឺជាពាណិជ្ជសញ្ញាចុះបញ្ជីរបស់ Zodiac International S.A.S ដែលប្រើក្រោមអាជ្ញាប័ណ្ណ។',
-    'footer.followUs': 'តាមដានយើង'
+    'footer.followUs': 'តាមដានយើង',
+    
+    // Mega Menu
+    'menu.products': 'ផលិតផលរបស់យើង',
+    'menu.poolCleaners': 'ឧបករណ៍សម្អាតអាងហែលទឹកនិងស្ប៉ា',
+    'menu.saltChlorinators': 'ម៉ាស៊ីនបង្កើតក្លរ',
+    'menu.chemicalFeeding': 'ប្រព័ន្ធផ្គត់ផ្គង់សារធាតុគីមី',
+    'menu.poolPumps': 'ម៉ាស៊ីនបូមទឹក',
+    'menu.poolFilters': 'តម្រងអាងហែលទឹក',
+    'menu.poolHeaters': 'ឧបករណ៍កម្ដៅទឹក',
+    'menu.controllers': 'ឧបករណ៍បញ្ជាអាងហែលទឹកនិងស្ប៉ា',
+    'menu.valves': 'វ៉ាល់អាងហែលទឹកនិងស្ប៉ា',
+    'menu.waterFeatures': 'លក្ខណៈពិសេសទឹក',
+    'menu.poolLights': 'ភ្លើងអាងហែលទឹក',
+    'menu.mineralPools': 'អាងហែលទឹកប្រើរ៉ែ MagnaPool®',
+    'menu.waterPurification': 'ប្រព័ន្ធសម្អាតទឹកប្រើរ៉ែ',
+    'menu.poolChemicals': 'សារធាតុគីមីអាងហែលទឹក',
+    'menu.spaChemicals': 'សារធាតុគីមីស្ប៉ា',
+    'menu.discontinued': 'ផលិតផលដែលឈប់ផលិត',
+    'menu.climateCare': 'មានវិញ្ញាបនបត្រថែរក្សាអាកាសធាតុ',
+    'menu.sustainablePool': 'អាងហែលទឹកចីរភាពរបស់ខ្ញុំ'
   }
 };
 

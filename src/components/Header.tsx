@@ -4,11 +4,13 @@ import { Menu, X, Search, ChevronDown, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import MegaDropdown from './MegaDropdown';
 
 const Header = () => {
   const { t, language, setLanguage } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +20,25 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Close dropdown when clicking outside
+    const handleClickOutside = () => {
+      if (activeDropdown) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [activeDropdown]);
+
+  const toggleDropdown = (dropdown: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-2 bg-white shadow-md' : 'py-4 bg-white/95'}`}>
@@ -41,25 +62,63 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="#" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
-              {t('nav.products')} <ChevronDown className="inline h-4 w-4 ml-1" />
+            <button 
+              onClick={(e) => toggleDropdown('products', e)}
+              className={`text-sm font-medium flex items-center transition-colors duration-200 ${activeDropdown === 'products' ? 'text-brand-blue' : 'text-gray-800 hover:text-brand-blue'}`}
+            >
+              {t('nav.products')} <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${activeDropdown === 'products' ? 'rotate-180' : ''}`} />
+            </button>
+            
+            <a href="/inspiration" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+              {t('nav.inspiration')}
             </a>
-            <a href="#" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
-              {t('nav.support')} <ChevronDown className="inline h-4 w-4 ml-1" />
+            
+            <button 
+              onClick={(e) => toggleDropdown('support', e)}
+              className={`text-sm font-medium flex items-center transition-colors duration-200 ${activeDropdown === 'support' ? 'text-brand-blue' : 'text-gray-800 hover:text-brand-blue'}`}
+            >
+              {t('nav.support')} <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${activeDropdown === 'support' ? 'rotate-180' : ''}`} />
+            </button>
+            
+            <a href="/pool-spa-guides" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+              {t('nav.poolSpaGuides')}
             </a>
-            <a href="#" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
-              {t('nav.parts')}
+            
+            <a href="/promotions" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+              {t('nav.promotions')}
             </a>
-            <a href="#" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
-              {t('nav.installers')}
+            
+            <a href="/faq" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+              {t('nav.faq')}
             </a>
-            <a href="#" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
-              {t('nav.about')} <ChevronDown className="inline h-4 w-4 ml-1" />
-            </a>
+            
+            <button 
+              onClick={(e) => toggleDropdown('about', e)}
+              className={`text-sm font-medium flex items-center transition-colors duration-200 ${activeDropdown === 'about' ? 'text-brand-blue' : 'text-gray-800 hover:text-brand-blue'}`}
+            >
+              {t('nav.about')} <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${activeDropdown === 'about' ? 'rotate-180' : ''}`} />
+            </button>
           </nav>
 
           {/* Right actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            {/* Find a Dealer Button */}
+            <Button 
+              size="sm" 
+              className="bg-brand-blue hover:bg-brand-blue/90 text-white rounded px-4 py-2 hidden md:flex"
+            >
+              {t('nav.findDealer')}
+            </Button>
+            
+            {/* Login Button */}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="bg-brand-yellow hover:bg-brand-yellow/90 text-black border-none rounded px-4 py-2 hidden md:flex"
+            >
+              {t('nav.login')}
+            </Button>
+
             {/* Language Switcher */}
             <Popover>
               <PopoverTrigger asChild>
@@ -104,6 +163,12 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Mega Dropdown for Products */}
+      <MegaDropdown 
+        isOpen={activeDropdown === 'products'} 
+        onClose={() => setActiveDropdown(null)} 
+      />
+
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t mt-2 animate-fade-in">
@@ -113,24 +178,33 @@ const Header = () => {
                 <span>{t('nav.products')}</span>
                 <ChevronDown className="h-4 w-4" />
               </a>
+              <a href="/inspiration" className="py-2 text-gray-800 border-b border-gray-100">
+                {t('nav.inspiration')}
+              </a>
               <a href="#" className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
                 <span>{t('nav.support')}</span>
                 <ChevronDown className="h-4 w-4" />
               </a>
-              <a href="#" className="py-2 text-gray-800 border-b border-gray-100">
-                {t('nav.parts')}
+              <a href="/pool-spa-guides" className="py-2 text-gray-800 border-b border-gray-100">
+                {t('nav.poolSpaGuides')}
               </a>
-              <a href="#" className="py-2 text-gray-800 border-b border-gray-100">
-                {t('nav.installers')}
+              <a href="/promotions" className="py-2 text-gray-800 border-b border-gray-100">
+                {t('nav.promotions')}
+              </a>
+              <a href="/faq" className="py-2 text-gray-800 border-b border-gray-100">
+                {t('nav.faq')}
               </a>
               <a href="#" className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
                 <span>{t('nav.about')}</span>
                 <ChevronDown className="h-4 w-4" />
               </a>
             </nav>
-            <div className="mt-4">
+            <div className="mt-4 space-y-2">
               <Button className="w-full bg-brand-blue hover:bg-brand-blue/90">
-                {t('nav.findProduct')}
+                {t('nav.findDealer')}
+              </Button>
+              <Button variant="outline" className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-black border-none">
+                {t('nav.login')}
               </Button>
             </div>
           </div>
