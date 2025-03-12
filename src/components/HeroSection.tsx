@@ -9,6 +9,7 @@ const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [autoplayInterval, setAutoplayInterval] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const slides = [
     {
@@ -21,16 +22,16 @@ const HeroSection = () => {
     },
     {
       id: 2,
-      title: 'hero.title2',
-      subtitle: 'hero.subtitle2',
+      title: 'hero.title',
+      subtitle: 'hero.subtitle',
       cta: 'hero.cta',
       image: 'https://images.unsplash.com/photo-1622902046580-2e0cb8d9d6d4?q=80&w=800&auto=format&fit=crop',
       gradient: 'from-brand-darkBlue to-brand-blue',
     },
     {
       id: 3,
-      title: 'hero.title3',
-      subtitle: 'hero.subtitle3',
+      title: 'hero.title',
+      subtitle: 'hero.subtitle',
       cta: 'hero.cta',
       image: 'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?q=80&w=800&auto=format&fit=crop',
       gradient: 'from-brand-blue to-brand-lightBlue',
@@ -41,7 +42,7 @@ const HeroSection = () => {
   useEffect(() => {
     setIsLoaded(true);
     const interval = window.setInterval(() => {
-      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+      changeSlide((currentSlide + 1) % slides.length);
     }, 5000);
     setAutoplayInterval(interval);
     
@@ -50,7 +51,19 @@ const HeroSection = () => {
         clearInterval(autoplayInterval);
       }
     };
-  }, []);
+  }, [currentSlide]);
+
+  const changeSlide = (newIndex: number) => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentSlide(newIndex);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 500);
+    }, 200);
+  };
 
   // Pause autoplay on user interaction
   const handleManualSlideChange = (index: number) => {
@@ -58,7 +71,13 @@ const HeroSection = () => {
       clearInterval(autoplayInterval);
       setAutoplayInterval(null);
     }
-    setCurrentSlide(index);
+    changeSlide(index);
+    
+    // Restart autoplay after 10 seconds of inactivity
+    const newInterval = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, 5000);
+    setAutoplayInterval(newInterval);
   };
 
   return (
@@ -67,14 +86,23 @@ const HeroSection = () => {
         <div 
           key={slide.id}
           className={`absolute inset-0 transition-opacity duration-700 ${
-            currentSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            currentSlide === index 
+              ? 'opacity-100 z-10' 
+              : isTransitioning && (index === currentSlide || index === (currentSlide + 1) % slides.length)
+                ? 'opacity-50 z-5' 
+                : 'opacity-0 z-0'
           }`}
         >
           {/* Background Image with gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-600/50">
             <div 
-              className={`absolute inset-0 bg-cover bg-center ${isLoaded ? 'image-loaded' : 'image-loading'}`} 
-              style={{ backgroundImage: `url(${slide.image})` }}
+              className={`absolute inset-0 bg-cover bg-center transition-transform duration-10000 ease-out transform scale-110 ${
+                currentSlide === index ? 'animate-[ken-burns_20s_ease-out_infinite_alternate]' : ''
+              }`}
+              style={{ 
+                backgroundImage: `url(${slide.image})`,
+                animation: currentSlide === index ? 'ken-burns 15s ease-out infinite alternate' : 'none'
+              }}
             />
           </div>
           
@@ -82,21 +110,28 @@ const HeroSection = () => {
           <div className="container mx-auto h-full px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 h-full items-center gap-8">
               {/* Text Content */}
-              <div className={`text-white z-10 transform transition-all duration-700 delay-300 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+              <div className={`text-white z-10 transform transition-all duration-700 delay-300 ${
+                currentSlide === index && isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+              }`}>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                   {t(slide.title)}
                 </h1>
                 <p className="text-lg md:text-xl opacity-90 mb-8 max-w-md">
                   {t(slide.subtitle)}
                 </p>
-                <Button size="lg" className="group bg-brand-yellow hover:bg-brand-yellow/90 text-black">
+                <Button 
+                  size="lg" 
+                  className="group bg-brand-yellow hover:bg-brand-yellow/90 text-black transform transition-transform hover:scale-105"
+                >
                   {t(slide.cta)}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </div>
               
               {/* Product Image */}
-              <div className={`hidden md:flex justify-center items-center transform transition-all duration-1000 delay-500 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'}`}>
+              <div className={`hidden md:flex justify-center items-center transform transition-all duration-1000 delay-500 ${
+                currentSlide === index && isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'
+              }`}>
                 <div className="relative">
                   <img 
                     src="https://images.unsplash.com/photo-1622902046580-2e0cb8d9d6d4?q=80&w=800&auto=format&fit=crop" 
@@ -123,7 +158,7 @@ const HeroSection = () => {
             onClick={() => handleManualSlideChange(index)}
             className={`w-3 h-3 rounded-full transition-all ${
               currentSlide === index 
-                ? 'bg-white scale-110' 
+                ? 'bg-white scale-125 w-6' 
                 : 'bg-white/50 hover:bg-white/70'
             }`}
             aria-label={`Go to slide ${index + 1}`}
@@ -133,14 +168,14 @@ const HeroSection = () => {
       
       {/* Arrow Navigation */}
       <button 
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all hover:scale-110"
         onClick={() => handleManualSlideChange(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
         aria-label="Previous slide"
       >
         <ChevronLeft className="h-6 w-6 text-white" />
       </button>
       <button 
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 backdrop-blur-sm transition-all hover:scale-110"
         onClick={() => handleManualSlideChange(currentSlide === slides.length - 1 ? 0 : currentSlide + 1)}
         aria-label="Next slide"
       >

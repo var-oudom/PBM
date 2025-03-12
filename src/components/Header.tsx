@@ -4,6 +4,7 @@ import { Menu, X, Search, ChevronDown, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Link } from 'react-router-dom';
 import MegaDropdown from './MegaDropdown';
 
 const Header = () => {
@@ -11,15 +12,27 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 10);
+      
+      // Hide header on scroll down, show on scroll up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     // Close dropdown when clicking outside
@@ -40,13 +53,17 @@ const Header = () => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
 
+  const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 
+    ${isScrolled ? 'py-2 bg-white shadow-md' : 'py-4 bg-white/95'} 
+    ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'}`;
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-2 bg-white shadow-md' : 'py-4 bg-white/95'}`}>
+    <header className={headerClasses}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <svg viewBox="0 0 100 30" width="120" className="fill-brand-blue">
                 <path d="M26.2,9.6c-2.3,0-4.2,1.9-4.2,4.2s1.9,4.2,4.2,4.2s4.2-1.9,4.2-4.2S28.5,9.6,26.2,9.6z M26.2,15.8c-1.1,0-2-0.9-2-2
                 s0.9-2,2-2s2,0.9,2,2S27.3,15.8,26.2,15.8z M40.4,9.6c-2.3,0-4.2,1.9-4.2,4.2s1.9,4.2,4.2,4.2s4.2-1.9,4.2-4.2
@@ -57,7 +74,7 @@ const Header = () => {
                 L14.8,12.7z M13.4,18.9h-5l-2.5-4.3l2.5-4.3h5l2.5,4.3L13.4,18.9z M89.1,10h-3V9.8h7.3V10h-3v8h-1.3V10z M95.3,18
                 h1.3v-8.2h-1.3V18z"/>
               </svg>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -69,9 +86,12 @@ const Header = () => {
               {t('nav.products')} <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${activeDropdown === 'products' ? 'rotate-180' : ''}`} />
             </button>
             
-            <a href="/brand" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+            <Link 
+              to="/brand" 
+              className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-bottom-left"
+            >
               {t('nav.brand')}
-            </a>
+            </Link>
             
             <button 
               onClick={(e) => toggleDropdown('support', e)}
@@ -80,17 +100,26 @@ const Header = () => {
               {t('nav.support')} <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${activeDropdown === 'support' ? 'rotate-180' : ''}`} />
             </button>
             
-            <a href="/pool-spa-guides" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+            <Link 
+              to="/pool-spa-guides" 
+              className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-bottom-left"
+            >
               {t('nav.poolSpaGuides')}
-            </a>
+            </Link>
             
-            <a href="/promotions" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+            <Link 
+              to="/promotions" 
+              className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-bottom-left"
+            >
               {t('nav.promotions')}
-            </a>
+            </Link>
             
-            <a href="/faq" className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200">
+            <Link 
+              to="/faq" 
+              className="text-sm font-medium text-gray-800 hover:text-brand-blue transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-bottom-left"
+            >
               {t('nav.faq')}
-            </a>
+            </Link>
             
             <button 
               onClick={(e) => toggleDropdown('about', e)}
@@ -157,30 +186,30 @@ const Header = () => {
         <div className="lg:hidden bg-white border-t mt-2 animate-fade-in">
           <div className="container mx-auto px-4 py-4">
             <nav className="flex flex-col space-y-4">
-              <a href="#" className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
+              <button className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
                 <span>{t('nav.products')}</span>
                 <ChevronDown className="h-4 w-4" />
-              </a>
-              <a href="/brand" className="py-2 text-gray-800 border-b border-gray-100">
+              </button>
+              <Link to="/brand" className="py-2 text-gray-800 border-b border-gray-100">
                 {t('nav.brand')}
-              </a>
-              <a href="#" className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
+              </Link>
+              <button className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
                 <span>{t('nav.support')}</span>
                 <ChevronDown className="h-4 w-4" />
-              </a>
-              <a href="/pool-spa-guides" className="py-2 text-gray-800 border-b border-gray-100">
+              </button>
+              <Link to="/pool-spa-guides" className="py-2 text-gray-800 border-b border-gray-100">
                 {t('nav.poolSpaGuides')}
-              </a>
-              <a href="/promotions" className="py-2 text-gray-800 border-b border-gray-100">
+              </Link>
+              <Link to="/promotions" className="py-2 text-gray-800 border-b border-gray-100">
                 {t('nav.promotions')}
-              </a>
-              <a href="/faq" className="py-2 text-gray-800 border-b border-gray-100">
+              </Link>
+              <Link to="/faq" className="py-2 text-gray-800 border-b border-gray-100">
                 {t('nav.faq')}
-              </a>
-              <a href="#" className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
+              </Link>
+              <button className="flex justify-between items-center py-2 text-gray-800 border-b border-gray-100">
                 <span>{t('nav.about')}</span>
                 <ChevronDown className="h-4 w-4" />
-              </a>
+              </button>
             </nav>
           </div>
         </div>
