@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Map, Tool, Shield, Tag } from 'lucide-react';
+import { Map, Wrench, Shield, Tag } from 'lucide-react';
 
 const FeatureSection = () => {
   const { t } = useLanguage();
@@ -13,7 +13,7 @@ const FeatureSection = () => {
       description: 'feature.dealer.description',
     },
     {
-      icon: <Tool className="h-10 w-10 text-brand-blue" />,
+      icon: <Wrench className="h-10 w-10 text-brand-blue" />,
       title: 'feature.assistance.title',
       description: 'feature.assistance.description',
     },
